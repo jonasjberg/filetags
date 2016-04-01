@@ -1,6 +1,9 @@
-# `geeqie`-integration README
+# Example `geeqie`-integration
 
-Added by Jonas Sjöberg 2016-04-01.
+Added 2016-04-01 by Jonas Sjöberg <https://github.com/jonasjberg>
+
+
+## Description
 This directory contains the files described in the main documentation
 `README.org`.
 
@@ -10,15 +13,18 @@ The target user group do not need this info, but for sake of completeness:
 
 * The example scripts assumes that `gnome-terminal` is installed.
     * This is not the case in for example default Xubuntu and others.
-    * You must modify as to match your specific setup, .
+    * You must modify as to match your specific setup. Alternatively, use
+      `x-terminal-emulator` which should link to whatever is in use.
+      More: <http://unix.stackexchange.com/a/32550>
+    * Options might need to be modified.
 
 * The path to the script `filetags.py` must be modified to reflect the actual
   location on your machine.
 
 
-
-Below follows a markdown-formatted version of `README.org` from
-<https://github.com/novoid/filetags>
+## Reference
+Below follows parts of `README.org` from <https://github.com/novoid/filetags>
+Refer to the original for updated documentation.
 
 
 --------------------------------------------------------------------------------
