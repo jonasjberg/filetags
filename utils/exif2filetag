@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# TODO: Document properly. Comments.
+
+path=${1:-}
+tag=${2:-}
+
+function die()
+{
+    printf "%s. Exiting ..\n" "${1:-"Unspecified error"}" 2>&1
+    exit 1
+}
+
+[ -n "$path" ] || die "Path not specified"
+[ -d "$path" ] || die "Invalid path"
+[ -n "$tag" ] || die "Exif tag not specified"
+
+
+filetags --dryrun -t "$tag" $(exiftool -quiet -ignoreMinorErrors -if '$keywords =~ /${tag}/i' -filename -r -p '$directory/$filename' "$path")
+
+exit $?
