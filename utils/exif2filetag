@@ -3,7 +3,8 @@
 # TODO: Document properly. Comments.
 
 path=${1:-}
-tag=${2:-}
+exif_tag=${2:-}
+new_tag=${3:-}
 
 function die()
 {
@@ -11,12 +12,24 @@ function die()
     exit 1
 }
 
+if [ $# -lt 3 ]
+then
+    TAB='    '
+    FORMAT="${TAB}%s\n" 
+    printf "%s\n" "USAGE: \"$(basename 0) /path/to/images [exif tag] [new tag]\""
+    printf "$FORMAT" "Images are searched recursively from the starting path."
+    printf "$FORMAT" "If the image exif data has keywords that matches [exif tag],"
+    printf "$FORMAT" "filetags is used to tag the image with [new tag]."
+fi
+
 [ -n "$path" ] || die "Path not specified"
 [ -d "$path" ] || die "Invalid path"
-[ -n "$tag" ] || die "Exif tag not specified"
+[ -n "$exif_tag" ]  || die "Exif tag not specified"
+[ -n "$new_tag" ]  || die "New tag not specified"
 
-printf "%10.10s : %-50.50s\n" "path" "$path"
-printf "%10.10s : %-50.50s\n" "tag" "$tag"
+printf "%20.20s : %-50.50s\n" "starting path" "$path"
+printf "%20.20s : %-50.50s\n" "match EXIF tag" "$exif_tag"
+printf "%20.20s : %-50.50s\n" "new tag" "$new_tag"
 
 
 function find_images_with_exif_tag()
@@ -24,10 +37,10 @@ function find_images_with_exif_tag()
     exiftool -quiet -ignoreMinorErrors -if "\$keywords =~ /${tag}/i" -filename -r -p '$directory/$filename' "$path"
 }
 
-find_images_with_exif_tag | xargs filetags --dryrun -t "$tag" 
+find_images_with_exif_tag | xargs filetags --dryrun -t "$new_tag" 
 
 # works
-#filetags --dryrun -t "$tag" $(find_images_with_exif_tag)
+#filetags --dryrun -t "$exif_tag" $(find_images_with_exif_tag)
 
 #exiftool -ignoreMinorErrors -if "\$keywords =~ /${tag}/i" -filename -r -p '$directory/$filename' "$path"
 
