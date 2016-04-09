@@ -15,7 +15,20 @@ function die()
 [ -d "$path" ] || die "Invalid path"
 [ -n "$tag" ] || die "Exif tag not specified"
 
+printf "%10.10s : %-50.50s\n" "path" "$path"
+printf "%10.10s : %-50.50s\n" "tag" "$tag"
 
-filetags --dryrun -t "$tag" $(exiftool -quiet -ignoreMinorErrors -if '$keywords =~ /${tag}/i' -filename -r -p '$directory/$filename' "$path")
+
+function find_images_with_exif_tag()
+{
+    exiftool -quiet -ignoreMinorErrors -if "\$keywords =~ /${tag}/i" -filename -r -p '$directory/$filename' "$path"
+}
+
+find_images_with_exif_tag | xargs filetags --dryrun -t "$tag" 
+
+# works
+#filetags --dryrun -t "$tag" $(find_images_with_exif_tag)
+
+#exiftool -ignoreMinorErrors -if "\$keywords =~ /${tag}/i" -filename -r -p '$directory/$filename' "$path"
 
 exit $?
