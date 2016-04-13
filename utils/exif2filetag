@@ -40,8 +40,12 @@ printf "$FORMAT" "new tag" "$new_tag"
 
 function find_images_with_exif_tag()
 {
-    exiftool -quiet -ignoreMinorErrors -if "\$keywords =~ /${exif_tag}/i" \
-        -filename -r -p '$directory/$filename' "$path"
+    exiftool -quiet             \
+             -ignoreMinorErrors \
+             -filename          \
+             -recursive         \
+             -if "\$keywords =~ /${exif_tag}/i" \
+             -printFormat '$directory/$filename' "$path"
 }
 
 
