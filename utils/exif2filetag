@@ -2,6 +2,8 @@
 
 # TODO: Document properly. Comments.
 
+SCRIPT_NAME="$(basename $0)"
+
 path=${1:-}
 exif_tag=${2:-}
 new_tag=${3:-${exif_tag}}
@@ -14,12 +16,15 @@ function die()
 
 if [ $# -lt 2 ]
 then
-    HSPACE='      '
+    HSPACE='       '
     FORMAT="${HSPACE}%s\n"
-    printf "%s\n" "USAGE: \"$(basename 0) /starting/path [MATCH EXIF TAG] [NEW FILETAG]\""
+    printf "%s\n" "USAGE: \"${SCRIPT_NAME} /starting/path [MATCH EXIF TAG] [NEW FILETAG]\""
+    printf "\n"
     printf "$FORMAT" "The starting path is searched recursively for images with any EXIF tags."
-    printf "$FORMAT" "Images with EXIF keywords that matches (also partial) [MATCH EXIF TAG]"
-    printf "$FORMAT" "is then sent to \"filetags\", which tags the image with [NEW FILETAG]."
+    printf "$FORMAT" "Images whose EXIF keywords matches [MATCH EXIF TAG] is"
+    printf "$FORMAT" "sent to \"filetags\", which adds the tag [NEW FILETAG] to the image."
+    printf "\n"
+    printf "$FORMAT" "The matching includes partial matches and is not case-sensitive."
 fi
 
 [ -n "$path" ]     || die "Path not specified"
