@@ -14,8 +14,8 @@ function die()
 
 if [ $# -lt 2 ]
 then
-    TAB='    '
-    FORMAT="${TAB}%s\n"
+    HSPACE='      '
+    FORMAT="${HSPACE}%s\n"
     printf "%s\n" "USAGE: \"$(basename 0) /starting/path [MATCH EXIF TAG] [NEW FILETAG]\""
     printf "$FORMAT" "The starting path is searched recursively for images with any EXIF tags."
     printf "$FORMAT" "Images with EXIF keywords that matches (also partial) [MATCH EXIF TAG]"
