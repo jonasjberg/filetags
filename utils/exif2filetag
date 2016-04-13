@@ -27,9 +27,10 @@ fi
 [ -n "$exif_tag" ] || die "Exif tag not specified"
 [ -n "$new_tag" ]  || die "New tag not specified"
 
-printf "%20.20s : %-50.50s\n" "starting path" "$path"
-printf "%20.20s : %-50.50s\n" "match EXIF tag" "$exif_tag"
-printf "%20.20s : %-50.50s\n" "new tag" "$new_tag"
+FORMAT="%20.20s : %-50.50s\n"
+printf "$FORMAT" "starting path" "$path"
+printf "$FORMAT" "match EXIF tag" "$exif_tag"
+printf "$FORMAT" "new tag" "$new_tag"
 
 
 function find_images_with_exif_tag()
