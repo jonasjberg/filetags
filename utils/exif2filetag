@@ -16,10 +16,10 @@ if [ $# -lt 2 ]
 then
     TAB='    '
     FORMAT="${TAB}%s\n"
-    printf "%s\n" "USAGE: \"$(basename 0) /path/to/images [exif tag] [new tag]\""
-    printf "$FORMAT" "Images are searched recursively from the starting path."
-    printf "$FORMAT" "If the image exif data has keywords that matches [exif tag],"
-    printf "$FORMAT" "filetags is used to tag the image with [new tag]."
+    printf "%s\n" "USAGE: \"$(basename 0) /starting/path [MATCH EXIF TAG] [NEW FILETAG]\""
+    printf "$FORMAT" "The starting path is searched recursively for images with any EXIF tags."
+    printf "$FORMAT" "Images with EXIF keywords that matches (also partial) [MATCH EXIF TAG]"
+    printf "$FORMAT" "is then sent to \"filetags\", which tags the image with [NEW FILETAG]."
 fi
 
 [ -n "$path" ]     || die "Path not specified"
