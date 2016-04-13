@@ -15,16 +15,16 @@ function die()
 if [ $# -lt 2 ]
 then
     TAB='    '
-    FORMAT="${TAB}%s\n" 
+    FORMAT="${TAB}%s\n"
     printf "%s\n" "USAGE: \"$(basename 0) /path/to/images [exif tag] [new tag]\""
     printf "$FORMAT" "Images are searched recursively from the starting path."
     printf "$FORMAT" "If the image exif data has keywords that matches [exif tag],"
     printf "$FORMAT" "filetags is used to tag the image with [new tag]."
 fi
 
-[ -n "$path" ] || die "Path not specified"
-[ -d "$path" ] || die "Invalid path"
-[ -n "$exif_tag" ]  || die "Exif tag not specified"
+[ -n "$path" ]     || die "Path not specified"
+[ -d "$path" ]     || die "Invalid path"
+[ -n "$exif_tag" ] || die "Exif tag not specified"
 [ -n "$new_tag" ]  || die "New tag not specified"
 
 printf "%20.20s : %-50.50s\n" "starting path" "$path"
