@@ -50,7 +50,7 @@ function find_images_with_exif_tag()
 
 
 # find_images_with_exif_tag | xargs -d '\n' filetags --dryrun -t "$new_tag"
-find_images_with_exif_tag | xargs --no-run-if-empty --delimiter='\n' filetags -t "$new_tag"
+find_images_with_exif_tag | xargs --no-run-if-empty --delimiter='\n' filetags --dryrun -t "$new_tag"
 
 
 exit $?
