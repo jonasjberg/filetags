@@ -4,7 +4,7 @@
 
 path=${1:-}
 exif_tag=${2:-}
-new_tag=${3:-}
+new_tag=${3:-${exif_tag}}
 
 function die()
 {
@@ -12,7 +12,7 @@ function die()
     exit 1
 }
 
-if [ $# -lt 3 ]
+if [ $# -lt 2 ]
 then
     TAB='    '
     FORMAT="${TAB}%s\n" 
