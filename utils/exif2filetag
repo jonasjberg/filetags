@@ -34,7 +34,8 @@ printf "%20.20s : %-50.50s\n" "new tag" "$new_tag"
 
 function find_images_with_exif_tag()
 {
-    exiftool -quiet -ignoreMinorErrors -if "\$keywords =~ /${tag}/i" -filename -r -p '$directory/$filename' "$path"
+    exiftool -quiet -ignoreMinorErrors -if "\$keywords =~ /${exif_tag}/i" \
+        -filename -r -p '$directory/$filename' "$path"
 }
 
 find_images_with_exif_tag | xargs filetags --dryrun -t "$new_tag" 
