@@ -28,8 +28,11 @@ function find_filename_tags()
 # List matches
 #find_filename_tags | xargs -0 printf "%s\n"
 
+
+FEH_THUMB_SIZE=200
+
 # View matches with feh
 #find_filename_tags | xargs -0 feh --fullscreen --auto-zoom
 
 # feh montage matches
-find_filename_tags | xargs -0 feh --montage --thumb-height 96 --thumb-width 96 
+find_filename_tags | xargs -0 feh --stretch --montage --thumb-height $FEH_THUMB_SIZE --thumb-width $FEH_THUMB_SIZE
