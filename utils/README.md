@@ -3,8 +3,8 @@ filetags utils
 Simple utility script for working with filetags.
 
 Written by Jonas Sjöberg in 2016  
-    jomeganas@gmail.com` 
-    https://github.com/jonasjberg
+    jomeganas@gmail.com  
+    https://github.com/jonasjberg  
 
 
 `exif2filetag`
