@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+# TODO: Document properly. Comments.
+
+
+function die()
+{
+    printf "%s. Exiting ..\n" "${1:-"Unspecified error"}" 2>&1
+    exit 1
+}
+
+path=${1:-}
+[ -n "$path" ] || die "Path not specified"
+[ -d "$path" ] || die "Invalid path"
+
+tag="${2:-}"
+[ -n "$tag" ] || die "Tag missing"
+
+
+printf "%10.10s : %-50.50s\n" "path" "$path"
+printf "%10.10s : %-50.50s\n" "tag" "$tag"
+
+function find_filename_tags()
+{
+    find "$path" -type f -name "* -- *${tag}*" -print0 
+}
+
+# List matches
+#find_filename_tags | xargs -0 printf "%s\n"
+
+
+FEH_THUMB_SIZE=200
+
+# View matches with feh
+#find_filename_tags | xargs -0 feh --fullscreen --auto-zoom
+
+# feh montage matches
+find_filename_tags | xargs -0 feh --stretch --montage --thumb-height $FEH_THUMB_SIZE --thumb-width $FEH_THUMB_SIZE
