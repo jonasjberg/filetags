@@ -11,6 +11,6 @@ cd "$SCRIPT_PATH" && FILETAGS=$(readlink -f "../filetags.py")
     --geometry=73x5+330+5   \
     --hide-menubar          \
     --hide-toolbar          \
-    --execute /home/spock/programming/projects/filetags/filetags.py --interactive --remove "${@}"
+    --command="${FILETAGS} --interactive --remove "${@}""
 
 #end
