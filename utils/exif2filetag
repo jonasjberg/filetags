@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-# TODO: Document properly. Comments.
+# exif2filetag
+# Tool for renaming images from their exif data using "filetags"
+# available at: https://github.com/novoid/filetags
 
 SCRIPT_NAME="$(basename $0)"
 
