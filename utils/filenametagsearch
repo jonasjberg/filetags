@@ -37,19 +37,24 @@ printf "%10.10s : %-50.50s\n" "tag" "$tag"
 
 function find_filename_tags()
 {
-    find "$path" -type f -name "* -- *${tag}*" -print0 
+    find "$path" -type f -name "* -- *${tag}*" -print0
 }
 
 
-# List matches
+
+# 1. List matches
 find_filename_tags | xargs -0 printf "%s\n"
 
+
+# TODO: Add command-line switches to select any of these here below.
 
 # feh settings
 FEH_THUMB_SIZE=200
 
-# View matches with feh
+# 2. View matches with feh
 #find_filename_tags | xargs -0 feh --fullscreen --auto-zoom
 
-# feh montage matches
+# 3. feh montage matches
 # find_filename_tags | xargs -0 feh --stretch --montage --thumb-height $FEH_THUMB_SIZE --thumb-width $FEH_THUMB_SIZE
+
+# 4. etc ..
