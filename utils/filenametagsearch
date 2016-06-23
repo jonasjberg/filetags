@@ -1,7 +1,22 @@
 #!/usr/bin/env bash
 
-# TODO: Document properly. Comments.
-
+# filenametagsearch
+# ~~~~~~~~~~~~~~~~~
+# Written by Jonas Sjöberg
+# https://github.com/jonasjberg
+# jomeganas@gmail.com
+#
+# Simple helper script for searching files created within "filetags" workflow.
+# Something more sophisticated than this is in the works ..
+# ______________________________________________________________________________
+#
+# USAGE: `filenametagsearch /starting/path [FILE TAG]`
+#
+# The starting path is searched recursively for files tagged with `[FILE TAG]`.
+# Matching images can be opened or listed in an arbitrary way.
+# As of now, matching images are displayed in a montage using `feh`.
+#
+# The matching includes partial matches and is not case-sensitive.
 
 function die()
 {
