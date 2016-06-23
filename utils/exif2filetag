@@ -29,6 +29,15 @@ then
     printf "$FORMAT" "The matching includes partial matches and is not case-sensitive."
 fi
 
+required_programs="filetags exiftool"
+for program in $required_programs
+do
+    if ! command -v "$program" >/dev/null 2>&1
+    then
+        die "Missing required executable \"${program}\""
+    fi
+done
+
 [ -n "$path" ]     || die "Path not specified"
 [ -d "$path" ]     || die "Invalid path"
 [ -n "$exif_tag" ] || die "Exif tag not specified"
