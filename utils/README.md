@@ -1,6 +1,6 @@
 filetags utils
 ================================================================================
-Simple utility script for working with filetags.
+Simple utility scripts for working with filetags.
 
 Written by Jonas Sjöberg in 2016  
     jomeganas@gmail.com  
@@ -28,3 +28,9 @@ Matching images can be opened or listed in an arbitrary way.
 As of now, matching images are displayed in a montage using `feh`.
 
 The matching includes partial matches and is not case-sensitive.
+
+
+This script is a somewhat temporary fix to a greater problem, to be solved at a
+later time. My aim is a complete "desktop search" solution, possibly based on
+`recoll`, but tweaked for the `filetags` workflow.  The `xapian` Python API also
+looks interesting.
