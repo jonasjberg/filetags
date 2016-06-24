@@ -34,3 +34,26 @@ This script is a somewhat temporary fix to a greater problem, to be solved at a
 later time. My aim is a complete "desktop search" solution, possibly based on
 `recoll`, but tweaked for the `filetags` workflow.  The `xapian` Python API also
 looks interesting.
+
+
+
+`list-filetags-in-path`
+-----------------------
+**USAGE:** `list-filetags-in-path [PATH]`  
+
+Where `PATH` is optional and defaults to `DEFAULT_SEARCH_PATH` as per hardcoded
+in the script..
+
+
+This script duplicates the functionality already provided by `filetags` version
+"0.6beta from 2016-01-08" using the option:
+
+```
+--ln, --list-tags-by-number
+                      list all file-tags sorted by their number of use
+```
+
+.. except that this script does recursive searches per default, while
+`filetags` works primarily with files, and would seem *(as in "not absolutely
+sure about this")* to need modification or an external wrapper script to do the
+same thing.
