@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Time-stamp: <2016-03-11 16:13:21 vk>
+# Time-stamp: <2016-05-06 12:03:14 vk>
 
 ## TODO:
 ## * fix parts marked with «FIXXME»
@@ -378,13 +378,22 @@ def handle_file(filename, tags, do_remove, dryrun):
     if dryrun:
         logging.info(u" ")
         logging.info(u" renaming \"%s\"" % filename)
-        logging.info(u"      ⤷   \"%s\"" % (new_filename))
+        try:
+            logging.info(u"      ⤷   \"%s\"" % (new_filename))
+        except UnicodeEncodeError:
+            logging.info(u"      >   \"%s\"" % (new_filename))
     else:
         if filename != new_filename:
             if not options.quiet:
-                print u"   %s   →   %s" % (filename, new_filename)
+                try:
+                    print u"   %s   →   %s" % (filename, new_filename)
+                except UnicodeEncodeError:
+                    print u"   %s   >   %s" % (filename, new_filename)
             logging.debug(u" renaming \"%s\"" % filename)
-            logging.debug(u"      ⤷   \"%s\"" % (new_filename))
+            try:
+                logging.debug(u"      ⤷   \"%s\"" % (new_filename))
+            except UnicodeEncodeError:
+                logging.debug(u"      >   \"%s\"" % (new_filename))
             os.rename(filename, new_filename)
 
     return new_filename
@@ -716,10 +725,10 @@ def locate_and_parse_controlled_vocabulary(startfile):
             return tags
         else:
             logging.debug('locate_and_parse_controlled_vocabulary: could not find controlled vocabulary in folder of startfile')
-            return False
+            return []
     else:
         logging.debug('locate_and_parse_controlled_vocabulary: could not derive filename for controlled vocabulary in folder of startfile')
-        return False
+        return []
 
 
 def print_tag_shortcut_with_numbers(tag_list, tags_get_added=True):
@@ -749,7 +758,10 @@ def print_tag_shortcut_with_numbers(tag_list, tags_get_added=True):
     for tag in tag_list:
         list_of_tag_hints.append(tag + ' (' + str(count) + ')')
         count += 1
-    print u'    ' + u' ⋅ '.join(list_of_tag_hints)
+    try:
+        print u'    ' + u' ⋅ '.join(list_of_tag_hints)
+    except UnicodeEncodeError:
+        print u'    ' + u' - '.join(list_of_tag_hints)
     print u'' ## newline at end
 
 
@@ -889,7 +901,7 @@ def main():
             vocabulary = sorted(locate_and_parse_controlled_vocabulary(args[0]))
             logging.debug('derived vocabulary with %i entries' % len(vocabulary))
 
-        if vocabulary:
+        if vocabulary and len(vocabulary) > 0:
 
             assert(vocabulary.__class__ == list)
 
