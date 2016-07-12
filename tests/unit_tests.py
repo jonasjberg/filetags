@@ -26,11 +26,15 @@ class TestMethods(unittest.TestCase):
         self.assertEqual(filetags.contains_tag(u'Some file name -- foobar.jpeg', u'foo'), False)
         self.assertEqual(filetags.contains_tag(u'Some file name -- foo.jpeg', u'bar'), False)
         self.assertEqual(filetags.contains_tag(u'Some foo file name -- bar.jpeg', u'foo'), False)
+        self.assertEqual(filetags.contains_tag(u'.hidden_file -- bar.jpeg', u'foo'), False)
+        self.assertEqual(filetags.contains_tag(u'.hidden_file -- foo.jpeg', u'foo'), True)
 
         ## without tagname -> check if any tags are found:
         self.assertEqual(filetags.contains_tag(u'Some file name -- foo.jpeg'), True)
         self.assertEqual(filetags.contains_tag(u'Some file name -- foo bar.jpeg'), True)
         self.assertEqual(filetags.contains_tag(u'Some file name.jpeg'), False)
+        self.assertEqual(filetags.contains_tag(u'.hidden_file -- foo.jpeg'), True)
+        self.assertEqual(filetags.contains_tag(u'.hidden_file.jpeg'), False)
 
     def test_adding_tag_to_filename(self):
 
@@ -40,6 +44,18 @@ class TestMethods(unittest.TestCase):
                          u'Some file name -- foo bar.jpeg')
         self.assertEqual(filetags.adding_tag_to_filename(u'Some file name -- foo.jpeg', u'foo'),
                          u'Some file name -- foo.jpeg')
+        self.assertEqual(filetags.adding_tag_to_filename(u'.hidden_file.jpeg', u'bar'),
+                         u'.hidden_file -- bar.jpeg')
+        self.assertEqual(filetags.adding_tag_to_filename(u'.hidden_file -- foo.jpeg', u'bar'),
+                         u'.hidden_file -- foo bar.jpeg')
+        self.assertEqual(filetags.adding_tag_to_filename(u'.hidden_file -- foo.jpeg', u'foo'),
+                         u'.hidden_file -- foo.jpeg')
+        self.assertEqual(filetags.adding_tag_to_filename(u'.hidden_file.tar.gz', u'bar'),
+                         u'.hidden_file -- bar.tar.gz')
+        self.assertEqual(filetags.adding_tag_to_filename(u'.hidden_file -- foo.tar.gz', u'bar'),
+                         u'.hidden_file -- foo bar.tar.gz')
+        self.assertEqual(filetags.adding_tag_to_filename(u'.hidden_file -- foo.tar.gz', u'foo'),
+                         u'.hidden_file -- foo.tar.gz')
 
     def test_removing_tag_from_filename(self):
 
