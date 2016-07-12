@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=filetags
+GenericName=filetags
+Comment=
+Exec=/home/vk/src/misc/vk-filetags-interactive-removing-wrapper-with-gnome-terminal.sh %F
+Icon=
+Terminal=true
+Type=Application
+Categories=Application;Graphics;
+hidden=false
+MimeType=image/*;video/*;image/mpo;image/thm
+Categories=X-Geeqie;

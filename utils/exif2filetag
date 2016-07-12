@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+
+# exif2filetag
+# Tool for renaming images from their exif data using "filetags"
+# available at: https://github.com/novoid/filetags
+
+SCRIPT_NAME="$(basename $0)"
+
+path=${1:-}
+exif_tag=${2:-}
+new_tag=${3:-${exif_tag}}
+
+function die()
+{
+    printf "%s. Exiting ..\n" "${1:-"Unspecified error"}" 2>&1
+    exit 1
+}
+
+if [ $# -lt 2 ]
+then
+    HSPACE='       '
+    FORMAT="${HSPACE}%s\n"
+    printf "%s\n" "USAGE: \"${SCRIPT_NAME} /starting/path [MATCH EXIF TAG] [NEW FILETAG]\""
+    printf "\n"
+    printf "$FORMAT" "The starting path is searched recursively for images with any EXIF tags."
+    printf "$FORMAT" "Images whose EXIF keywords matches [MATCH EXIF TAG] is"
+    printf "$FORMAT" "sent to \"filetags\", which adds the tag [NEW FILETAG] to the image."
+    printf "\n"
+    printf "$FORMAT" "The matching includes partial matches and is not case-sensitive."
+fi
+
+required_programs="filetags exiftool"
+for program in $required_programs
+do
+    if ! command -v "$program" >/dev/null 2>&1
+    then
+        die "Missing required executable \"${program}\""
+    fi
+done
+
+[ -n "$path" ]     || die "Path not specified"
+[ -d "$path" ]     || die "Invalid path"
+[ -n "$exif_tag" ] || die "Exif tag not specified"
+[ -n "$new_tag" ]  || die "New tag not specified"
+
+FORMAT="%20.20s : %-50.50s\n"
+printf "$FORMAT" "starting path" "$path"
+printf "$FORMAT" "match EXIF tag" "$exif_tag"
+printf "$FORMAT" "new tag" "$new_tag"
+
+
+function find_images_with_exif_tag()
+{
+    exiftool -quiet             \
+             -ignoreMinorErrors \
+             -filename          \
+             -recursive         \
+             -if "\$keywords =~ /${exif_tag}/i" \
+             -printFormat '$directory/$filename' "$path"
+}
+
+
+# find_images_with_exif_tag | xargs -d '\n' filetags --dryrun -t "$new_tag"
+find_images_with_exif_tag | xargs --no-run-if-empty --delimiter='\n' filetags --dryrun -t "$new_tag"
+
+
+exit $?

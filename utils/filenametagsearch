@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+# filenametagsearch
+# ~~~~~~~~~~~~~~~~~
+# Written by Jonas Sjöberg
+# https://github.com/jonasjberg
+# jomeganas@gmail.com
+#
+# Simple helper script for searching files created within "filetags" workflow.
+# Something more sophisticated than this is in the works ..
+# ______________________________________________________________________________
+#
+# USAGE: `filenametagsearch /starting/path [FILE TAG]`
+#
+# The starting path is searched recursively for files tagged with `[FILE TAG]`.
+# Matching images can be opened or listed in an arbitrary way.
+# As of now, matching images are displayed in a montage using `feh`.
+#
+# The matching includes partial matches and is not case-sensitive.
+
+function die()
+{
+    printf "%s. Exiting ..\n" "${1:-"Unspecified error"}" 2>&1
+    exit 1
+}
+
+path=${1:-}
+[ -n "$path" ] || die "Path not specified"
+[ -d "$path" ] || die "Invalid path"
+
+tag="${2:-}"
+[ -n "$tag" ] || die "Tag missing"
+
+
+printf "%10.10s : %-50.50s\n" "path" "$path"
+printf "%10.10s : %-50.50s\n" "tag" "$tag"
+
+function find_filename_tags()
+{
+    find "$path" -type f -name "* -- *${tag}*" -print0
+}
+
+
+
+# 1. List matches
+find_filename_tags | xargs -0 printf "%s\n"
+
+
+# TODO: Add command-line switches to select any of these here below.
+
+# feh settings
+FEH_THUMB_SIZE=200
+
+# 2. View matches with feh
+#find_filename_tags | xargs -0 feh --fullscreen --auto-zoom
+
+# 3. feh montage matches
+# find_filename_tags | xargs -0 feh --stretch --montage --thumb-height $FEH_THUMB_SIZE --thumb-width $FEH_THUMB_SIZE
+
+# 4. etc ..
