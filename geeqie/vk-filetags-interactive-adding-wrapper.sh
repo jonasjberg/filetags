@@ -11,6 +11,6 @@ cd "$SCRIPT_PATH" && FILETAGS=$(readlink -f "../filetags.py")
     --geometry=90x10+330+5  \
     --hide-menubar          \
     --hide-toolbar          \
-    --command="${FILETAGS} --interactive "${@}""
+    --execute ${FILETAGS} --interactive "${@}"
 
 #end
