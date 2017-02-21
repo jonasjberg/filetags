@@ -1,5 +1,5 @@
-## Time-stamp: <2015-01-02 17:16:39 vk>
-## -*- coding: utf-8 -*-
+## Time-stamp: <2016-08-29 18:09:06 karl.voit>
+## -*- mode: org; coding: utf-8 -*-
 ## This file is best viewed with GNU Emacs Org-mode: http://orgmode.org/
 
 * filetags
@@ -7,11 +7,15 @@
 This Python script adds or removes tags to file names in the following
 form:
 
-: 2013-05-09 a file name with ISO date stamp in name -- tag1.jpg
-: different file without time stamp in name -- tag2.txt
-: 2013-05-09T16.17 file name with time stamp -- tag3.csv
-: file name with several tags -- tag1 tag2.jpeg
-: another example file name with multiple example tags -- fun videos kids.mpeg
+: file without time stamp in name -- *tag2*.txt
+: 
+: file name with several tags -- *tag1 tag2*.jpeg
+: 
+: another example file name with multiple example tags -- *fun videos kids*.mpeg
+: 
+: 2013-05-09 a file name with ISO date stamp in name -- *tag1*.jpg
+: 
+: 201t-05-09T16.17 file name with time stamp -- *tag3*.csv
 
 The script accepts an arbitrary number of files (see your shell for
 possible length limitations).
@@ -24,12 +28,12 @@ possible length limitations).
 
 Besides the fact that I am using [[https://en.wikipedia.org/wiki/Iso_date][ISO dates and times]] in file names
 (as shown in examples above), I am using tags with file names. To
-separate tags from the file name, I am using the separator ~ -- ~
-(space dash dash space).
+separate tags from the file name, I am using the separator 
+"space dash dash space".
 
 For people familiar with [[https://en.wikipedia.org/wiki/Regex][Regular Expressions]]:
 
-: (<ISO date/time stamp>)? <descriptive file name> -- <list of tags separated by spaces>.extension
+: (<ISO date/time stamp>)? <descriptive file name> -- <list of tags separated by spaces>.<file extension>
 
 Tagging files this way requires a file renaming process. Adding (or
 removing) tag(s) to a set of file results in multiple renaming
@@ -41,7 +45,82 @@ You may like to add this tool to your image or file manager of
 choice. I added mine to [[http://geeqie.sourceforge.net/][geeqie]] which is my favorite image viewer on
 GNU/Linux.
 
+** Installation
+
+Get it via [[https://github.com/novoid/filetags][GitHub]] or install it via [[https://pip.pypa.io/en/stable/][pip]]: ~pip install filetags~
+
 ** Usage
+
+#+BEGIN_SRC sh :results output :wrap src
+./filetags.py --help
+#+END_SRC
+
+#+BEGIN_src
+Usage:
+    ./filetags.py [<options>] <list of files>
+
+This tool adds or removes simple tags to/from file names.
+
+Tags within file names are placed between the actual file name and
+the file extension, separated with " -- ". Multiple tags are
+separated with " ":
+  Update for the Boss -- projectA presentation.pptx
+  2013-05-16T15.31.42 Error message -- screenshot projectB.png
+
+This easy to use tag system has a drawback: for tagging a larger
+set of files with the same tag, you have to rename each file
+separately. With this tool, this only requires one step.
+
+Example usages:
+  ./filetags.py --tags="presentation projectA" *.pptx
+      ... adds the tags "presentation" and "projectA" to all PPTX-files
+  ./filetags.py -i *
+      ... ask for tag(s) and add them to all files in current folder
+  ./filetags.py -r draft *report*
+      ... removes the tag "draft" from all files containing the word "report"
+
+
+This tools is looking for (the first) text file named ".filetags" in
+current and parent directories. Each line of it is interpreted as a tag
+for tag completion.
+
+Verbose description: http://Karl-Voit.at/managing-digital-photographs/
+
+:copyright: (c) by Karl Voit <tools@Karl-Voit.at>
+:license: GPL v3 or any later version
+:URL: https://github.com/novoid/filetag
+:bugreports: via github or <tools@Karl-Voit.at>
+:version: 2016-08-21
+
+
+Options:
+  -h, --help            show this help message and exit
+  -t TAGS, --tag=TAGS, --tags=TAGS
+                        one or more tags (in quotes, separated by spaces) to
+                        add/remove
+  -r, -d, --remove, --delete
+                        remove tags from (instead of adding to) file name(s)
+  -i, --interactive     interactive mode: ask for (a)dding or (r)emoving and
+                        name of tag(s)
+  -s, --dryrun          enable dryrun mode: just simulate what would happen,
+                        do not modify files
+  --ln, --list-tags-by-number
+                        list all file-tags sorted by their number of use
+  --la, --list-tags-by-alphabet
+                        list all file-tags sorted by their name
+  --lu, --list-tags-unknown-to-vocabulary
+                        list all file-tags which are found in file names but
+                        are not part of .filetags
+  --tag-gardening       This is for getting an overview on tags that might
+                        require to be renamed (typos, singular/plural, ...).
+                        See also http://www.webology.org/2008/v5n3/a58.html
+  -v, --verbose         enable verbose mode
+  -q, --quiet           enable quiet mode
+  --version             display version and exit
+#+END_src
+
+
+*** Examples:
 
 : filetags.py --tag foo a_file_name.txt
 ... adds tag "foo" such that it results in ~a_file_name -- foo.txt~
@@ -59,11 +138,18 @@ GNU/Linux.
 ... removes tag "foo" such that it results in ~foo a_file_name.txt~
 
 : filetags.py --tag-gardening
-... prints out a summary of tags in current and sub-folders used and 
+... prints out a summary of tags in current and sub-folders used and
 tags that are most likely typos or abandoned
 
-For a complete list of parameters, please try:
-: filetags.py --help
+** Changelog
+
+- [[https://twitter.com/n0v0id/status/335043859404951554][2013-05-16]]: first version on GitHub
+- [[https://twitter.com/n0v0id/status/546449664179195904][2014-12-21]]: ~--list-tags-by-number~, ~--list-tags-by-alphabet~, and ~--tag-gardening~
+- [[https://twitter.com/n0v0id/status/551050830678605824][2015-01-02]]: tab completion for interactive tag input
+- [[https://twitter.com/n0v0id/status/675388298735575041][2015-12-11]]: shortcut numbers for removing tags
+- [[https://twitter.com/n0v0id/status/685507528856367104][2016-01-08]]: shortcut numbers for top nine tags for adding tags
+- [[https://twitter.com/n0v0id/status/767343476665159680][2016-08-21]]: mutually exclusive tags
+- [[https://twitter.com/n0v0id/status/768167397895180289][2016-08-23]]: installable via ~pip install filetags~
 
 ** Get the most out of filetags: controlled vocabulary ~.filetags~
 :PROPERTIES:
@@ -77,12 +163,114 @@ directories as well. The first file of this name found is read in.
 Each line represents one tag. Those tags are used for *tag
 completion*.
 
-This is purely great: with tags within ~.filetag~ you don't have to
+This is purely great: with tags within ~.filetags~ you don't have to
 enter the tags entrirely: just type the first characters and press TAB
 (twice to show you all possibilities). You will be amazed how
 efficiently you are going to tag things! :-)
 
-** Bonus: integrating into Geeqie (or similar file browsers)
+If you enter multiple tags in the same line in ~.filetags~, they are
+interpreted as *mutually exclusive tags*. For example, if your
+~.filetags~ contains the line ~winter spring summer autumn~, filetags
+replaces any season-tag with the new one. So if you tag the file ...
+
+: example file -- summer anothertag.txt
+
+... with the tag ~winter~, it gets modified to ...
+
+: example file -- winter anothertag.txt
+
+... without having to manually remove the tag ~summer~.
+
+** Bonus: Using tags to specify a sub-set of photographs
+
+You know the problem: got back from Paris and you can not show 937
+image files to your friends. It's just too much.
+
+My solution: I tag to define selections. For example, I am using
+~sel~ for the ultimate cool photographs using ~filetags~, of course.
+
+Within geeqie, I redefined ~S~ (usually mapped to "sort manager") to
+an external shell script (below) which creates a temporary folder
+(within ~/tmp/~), symbolic links to all photographs of the current
+folder that contain the tag ~sel~, and start a new instance of
+geeqie.
+
+In short: after returning from a trip, I mark all "cool" photographs
+within geeqie, choose ~t~ and tag them with ~sel~ (described in
+previous section). For showing only ~sel~ images, I just press ~S~
+in geeqie and instead of 937 photographs, my friends just have to
+watch the best 50 or so. :-)
+
+The script ~vksel.sh~ looks like this:
+: #!/bin/sh
+:
+: TMPDIR="/tmp/imageselection"
+: IMAGEDIR="${1}"
+: IMAGEVIEWER="geeqie"
+: FILENAME=$(basename $0)
+:
+: print_usage()
+: {
+:         echo
+:         echo "usage:   ${FILENAME} <directory>"
+:         echo
+:         echo "... starts a image viewer containing files tagged with \"sel\" in the current"
+:         echo "folder or the folder given as parameter 1."
+:         echo
+: }
+:
+: STARTDIR=`pwd`
+:
+: if [ "x${IMAGEDIR}" = "x-h" -o "x${IMAGEDIR}" = "x--help" ]; then
+:     print_usage
+:     exit 0
+: fi
+:
+: if [ "x${IMAGEDIR}" = "x" ]; then
+:     IMAGEDIR="${STARTDIR}"
+: fi
+:
+: if [ ! -d ${IMAGEIDIR} ]; then
+:     echo
+:     echo "  Please specify a folder containing the <directory>."
+:     echo
+:     print_usage
+:     exit 1
+: fi
+:
+:
+: ## remove (old) TMPDIR if exists:
+: test -d "${TMPDIR}" && rm -rf "${TMPDIR}"
+:
+: ## create fresh TMPDIR
+: mkdir "${TMPDIR}"
+: cd "${TMPDIR}"
+:
+:
+: find "${IMAGEDIR}" -name '* -- *sel*' -print0 | xargs -0 -I {} ln -s {} . --
+: ${IMAGEVIEWER}
+:
+: cd "${STARTDIR}"
+:
+: #end
+
+Integration in geeqie is done with ~$HOME/.config/geeqie/applications/show-sel.desktop~
+: [Desktop Entry]
+: Name=show-sel
+: GenericName=show-sel
+: Comment=
+: Exec=/home/vk/bin/vksel.sh
+: Icon=
+: Terminal=true
+: Type=Application
+: Categories=Application;Graphics;
+: hidden=false
+: MimeType=image/*;video/*;image/mpo;image/thm
+: Categories=X-Geeqie;
+
+* Integration Into Common Tools
+
+** Integrating into Geeqie
 
 I am using [[http://geeqie.sourceforge.net/][geeqie]] for browsing/presenting image files. After I
 mark a set of images for adding one or more tags, I just have to
@@ -96,25 +284,25 @@ script does provide a shell window for entering the tags.
 
 ~vk-filetags-interactive-adding-wrapper-with-gnome-terminal.sh~ looks like:
 : #!/bin/sh
-: 
+:
 : /usr/bin/gnome-terminal \
 :     --geometry=73x5+330+5  \
 :     --tab-with-profile=big \
 :     --hide-menubar \
 :     -x /home/vk/src/filetags/filetags.py --interactive "${@}"
-: 
+:
 : #end
 
 ~vk-filetags-interactive-removing-wrapper-with-gnome-terminal.sh~
 looks like:
 : #!/bin/sh
-: 
+:
 : /usr/bin/gnome-terminal \
 :     --geometry=73x5+330+5  \
 :     --tab-with-profile=big \
 :     --hide-menubar \
 :     -x /home/vk/src/filetags/filetags.py --interactive --remove "${@}"
-: 
+:
 : #end
 
 In ~$HOME/.config/geeqie/applications~ I wrote two desktop files such
@@ -150,99 +338,44 @@ image files:
 : Categories=X-Geeqie;
 
 In order to be able to use the keyboard shortcuts ~t~ (adding tags)
-and ~T~ (removing tags), you can define them in geeqie: 
+and ~T~ (removing tags), you can define them in geeqie:
 1. Edit > Preferences > Preferences ... > Keyboard.
 2. Scroll to the bottom of the list.
 3. Double click in the ~KEY~-column of ~filetags~ and ~filetags-remove~
    and choose your desired keyboard shortcut accordingly.
 
 I hope this method is as handy for you as it is for me :-)
-** Bonus: Using tags to specify a sub-set of photographs
 
-You know the problem: got back from Paris and you can not show 937
-image files to your friends. It's just too much.
+** Integration into Thunar
 
-My solution: I tag to define selections. For example, I am using
-~sel~ for the ultimate cool photographs using ~filetags~, of course.
+[[https://en.wikipedia.org/wiki/Thunar][Thunar]] is a popular GNU/Linux file browser for the xfce environment.
 
-Within geeqie, I redefined ~S~ (usually mapped to "sort manager") to
-an external shell script (below) which creates a temporary folder
-(within ~/tmp/~), symbolic links to all photographs of the current
-folder that contain the tag ~sel~, and start a new instance of
-geeqie.
+Unfortunately, it is rather complicated to add custom commands to
+Thunar. I found [[https://askubuntu.com/questions/403922/keyboard-shortcut-for-thunar-custom-actions][a good description]] which you might want to follow.
 
-In short: after returning from a trip, I mark all "cool" photographs
-within geeqie, choose ~t~ and tag them with ~sel~ (described in
-previous section). For showing only ~sel~ images, I just press ~S~
-in geeqie and instead of 937 photographs, my friends just have to
-watch the best 50 or so. :-)
+To my disappoinment, even this manual confguration is not stable
+somehow. From time to time, the IDs of ~$HOME/.config/Thunar/uca.xml~
+and ~$HOME/.config/Thunar/accels.scm~ differ.
 
-The script ~vksel.sh~ looks like this:
-: #!/bin/sh
-: 
-: TMPDIR="/tmp/imageselection"
-: IMAGEDIR="${1}"
-: IMAGEVIEWER="geeqie"
-: FILENAME=$(basename $0)
-: 
-: print_usage()
-: {
-:         echo
-:         echo "usage:   ${FILENAME} <directory>"
-:         echo 
-:         echo "... starts a image viewer containing files tagged with \"sel\" in the current" 
-:         echo "folder or the folder given as parameter 1."
-:         echo
-: }
-: 
-: STARTDIR=`pwd`
-: 
-: if [ "x${IMAGEDIR}" = "x-h" -o "x${IMAGEDIR}" = "x--help" ]; then
-:     print_usage
-:     exit 0
-: fi
-: 
-: if [ "x${IMAGEDIR}" = "x" ]; then
-:     IMAGEDIR="${STARTDIR}"
-: fi
-: 
-: if [ ! -d ${IMAGEIDIR} ]; then
-:     echo
-:     echo "  Please specify a folder containing the <directory>."
-:     echo
-:     print_usage
-:     exit 1
-: fi
-: 
-: 
-: ## remove (old) TMPDIR if exists:
-: test -d "${TMPDIR}" && rm -rf "${TMPDIR}"
-: 
-: ## create fresh TMPDIR
-: mkdir "${TMPDIR}"
-: cd "${TMPDIR}"
-: 
-: 
-: find "${IMAGEDIR}" -name '* -- *sel*' -print0 | xargs -0 -I {} ln -s {} . --
-: ${IMAGEVIEWER}
-: 
-: cd "${STARTDIR}"
-: 
-: #end
+For people using Org-mode, I automated the updating process (not the
+initial adding process) to match IDs again:
 
-Integration in geeqie is done with ~$HOME/.config/geeqie/applications/show-sel.desktop~
-: [Desktop Entry]
-: Name=show-sel
-: GenericName=show-sel
-: Comment=
-: Exec=/home/vk/bin/vksel.sh
-: Icon=
-: Terminal=true
-: Type=Application
-: Categories=Application;Graphics;
-: hidden=false
-: MimeType=image/*;video/*;image/mpo;image/thm
-: Categories=X-Geeqie;
+Script for checking "tag": do it ~tag-ID~ and path in ~accels.scm~ match?
+: #+BEGIN_SRC sh :var myname="tag"
+: ID=`egrep -A 2 "<name>$myname" $HOME/.config/Thunar/uca.xml | grep unique-id | sed 's#.*<unique-id>##' | sed 's#<.*$##'`
+: echo "$myname-ID of uca.xml: $ID"
+: echo "In accels.scm: "`grep -i "$ID" $HOME/.config/Thunar/accels.scm`
+: #+END_SRC
+
+If they don't match, following script re-writes ~accels.scm~ with the current ID:
+: #+BEGIN_SRC sh :var myname="tag" :var myshortcut="<Alt>t"
+: ID=`egrep -A 2 "<name>$myname" $HOME/.config/Thunar/uca.xml | grep unique-id | sed 's#.*<unique-id>##' | sed 's#<.*$##'`
+: echo "appending $myname-ID of uca.xml to accels.scm: $ID"
+: mv $HOME/.config/Thunar/accels.scm $HOME/.config/Thunar/accels.scm.OLD
+: grep -v "\"$myshortcut\"" $HOME/.config/Thunar/accels.scm.OLD > $HOME/.config/Thunar/accels.scm
+: rm $HOME/.config/Thunar/accels.scm.OLD
+: echo "(gtk_accel_path \"<Actions>/ThunarActions/uca-action-$ID\" \"$myshortcut\")" >> $HOME/.config/Thunar/accels.scm
+: #+END_SRC
 
 * Related tools and workflows
 
@@ -270,13 +403,16 @@ current season]].
 Files containing an ISO time/date-stamp gets indexed by the
 filename-module of [[https://github.com/novoid/Memacs][Memacs]].
 
-* Contribute!
+* How to Thank Me
 
-I am looking for your ideas!
+I'm glad you like my tools. If you want to support me:
 
-If you want to contribute to this cool project, please fork and
-contribute!
-
+- Send old-fashioned *postcard* per snailmail - I love personal feedback!
+  - see [[http://tinyurl.com/j6w8hyo][my address]]
+- Send feature wishes or improvements as an issue on GitHub
+- Create issues on GitHub for bugs
+- Contribute merge requests for bug fixes
+- Check out my other cool [[https://github.com/novoid][projects on GitHub]]
 
 * Local Variables                                                  :noexport:
 # Local Variables:
